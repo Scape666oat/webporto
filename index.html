@@ -128,6 +128,12 @@
   .card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .card li { color: #c9c9ce; font-size: 15px; line-height: 1.55; padding-left: 20px; position: relative; }
   .card li::before { content: '✦'; position: absolute; left: 0; color: var(--accent2); font-size: 11px; top: 4px; }
+  .cert-card { display: grid; grid-template-columns: 78px 1fr; gap: 22px; align-items: center; }
+  .cert-logo { width: 78px; height: 78px; display: grid; place-items: center; border-radius: 18px; background: rgba(255,255,255,.92); padding: 10px; }
+  .cert-logo svg { width: 100%; height: 100%; display: block; }
+  .cert-card .when { grid-column: 2; grid-row: 1; margin-bottom: -16px; }
+  .cert-card h3, .cert-card .sub { grid-column: 2; }
+  @media (max-width: 480px) { .cert-card { grid-template-columns: 62px 1fr; gap: 16px; } .cert-logo { width: 62px; height: 62px; padding: 7px; } }
 
   /* ---------- Skills ---------- */
   .chips { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -315,10 +321,26 @@
     <div class="kicker reveal">Certifications</div>
     <h2 class="reveal d1">Certified.<br><em>Battle-tested.</em></h2>
     <div class="grid cols-2">
-      <div class="card reveal d1"><div class="when">Cisco</div><h3>CCNA</h3><div class="sub">Cisco Certified Network Associate</div></div>
-      <div class="card reveal d2"><div class="when">Fortinet</div><h3>NSE4</h3><div class="sub">Network Security Expert Level 4</div></div>
-      <div class="card reveal d1"><div class="when">CompTIA</div><h3>CompTIA A+</h3><div class="sub">CompTIA A+ Certified</div></div>
-      <div class="card reveal d2"><div class="when">AXELOS</div><h3>ITIL v4 Foundation</h3><div class="sub">ITIL v4 Foundation Certified</div></div>
+      <div class="card cert-card reveal d1">
+        <div class="cert-logo" aria-label="Cisco CCNA logo">
+          <svg viewBox="0 0 100 100" role="img"><path fill="#049fd9" d="M8 62h84v10H8zM18 48h64v8H18zM28 35h44v7H28z"/><path fill="#049fd9" d="M25 77h50v8H25z"/><text x="50" y="27" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1b3c68">CCNA</text></svg>
+        </div><div><div class="when">Cisco</div><h3>CCNA</h3><div class="sub">Cisco Certified Network Associate</div></div>
+      </div>
+      <div class="card cert-card reveal d2">
+        <div class="cert-logo" aria-label="Fortinet NSE 4 logo">
+          <svg viewBox="0 0 100 100" role="img"><path fill="#da291c" d="M12 22h76v14H12zM12 43h58v12H12zM12 62h42v12H12z"/><text x="51" y="90" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#333">NSE 4</text></svg>
+        </div><div><div class="when">Fortinet</div><h3>NSE4</h3><div class="sub">Network Security Expert Level 4</div></div>
+      </div>
+      <div class="card cert-card reveal d1">
+        <div class="cert-logo" aria-label="CompTIA A plus logo">
+          <svg viewBox="0 0 100 100" role="img"><circle cx="50" cy="50" r="42" fill="#c8202f"/><text x="50" y="57" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="800" fill="white">A+</text><text x="50" y="75" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="white">COMPTIA</text></svg>
+        </div><div><div class="when">CompTIA</div><h3>CompTIA A+</h3><div class="sub">CompTIA A+ Certified</div></div>
+      </div>
+      <div class="card cert-card reveal d2">
+        <div class="cert-logo" aria-label="ITIL 4 Foundation logo">
+          <svg viewBox="0 0 100 100" role="img"><circle cx="50" cy="50" r="43" fill="#5b2c83"/><text x="50" y="47" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="800" fill="white">ITIL</text><text x="50" y="65" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="white">4</text></svg>
+        </div><div><div class="when">AXELOS</div><h3>ITIL v4 Foundation</h3><div class="sub">ITIL v4 Foundation Certified</div></div>
+      </div>
     </div>
   </section>
 
