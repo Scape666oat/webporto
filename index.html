@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indra Ramadhan — Network Engineer</title>
+<meta name="description" content="Indra Ramadhan — Network Engineer with 13+ years across telecom infrastructure, enterprise networking and cybersecurity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #030308;
+    --ink: #f5f5f7;
+    --dim: #86868b;
+    --accent: #7aa2ff;
+    --accent2: #b48cff;
+    --card: rgba(255,255,255,0.06);
+    --line: rgba(255,255,255,0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  #bg-canvas {
+    position: fixed; inset: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .content { position: relative; z-index: 1; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px clamp(24px, 5vw, 64px);
+    backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(3,3,8,0.55);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .logo { font-weight: 700; font-size: 15px; letter-spacing: 0.14em; }
+  nav .logo span { color: var(--accent); }
+  nav ul { display: flex; gap: 28px; list-style: none; }
+  nav a {
+    color: var(--dim); text-decoration: none; font-size: 12.5px;
+    font-weight: 500; letter-spacing: 0.02em; transition: color .25s;
+  }
+  nav a:hover { color: var(--ink); }
+  @media (max-width: 720px) { nav ul { gap: 16px; } nav a { font-size: 11px; } }
+
+  /* ---------- Sections ---------- */
+  section {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 120px clamp(24px, 6vw, 80px);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .kicker {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+  }
+  h2 {
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 700; line-height: 1.08; letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  h2 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  p.lede {
+    font-size: clamp(17px, 2vw, 21px); color: var(--dim);
+    line-height: 1.6; max-width: 640px; font-weight: 400;
+  }
+
+  /* ---------- Hero ---------- */
+  #hero { min-height: 100vh; justify-content: center; align-items: center; text-align: center; }
+  #hero h1 {
+    font-size: clamp(52px, 9vw, 120px);
+    font-weight: 800; letter-spacing: -0.03em; line-height: 1.02;
+    background: linear-gradient(180deg, #ffffff 30%, #9aa4ff 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #hero .role {
+    margin-top: 22px; font-size: clamp(17px, 2.4vw, 26px);
+    color: var(--dim); font-weight: 400; letter-spacing: 0.01em;
+  }
+  #hero .badges { margin-top: 34px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .badge {
+    padding: 8px 16px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card);
+    font-size: 12.5px; font-weight: 600; color: #cfd4ff; letter-spacing: 0.04em;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    color: var(--dim); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translate(-50%, 0);} 50% { transform: translate(-50%, 8px);} }
+
+  /* ---------- Reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(42px); transition: opacity 1s cubic-bezier(.2,.6,.2,1), transform 1s cubic-bezier(.2,.6,.2,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal.d1 { transition-delay: .12s; } .reveal.d2 { transition-delay: .24s; } .reveal.d3 { transition-delay: .36s; }
+
+  /* ---------- Cards ---------- */
+  .grid { display: grid; gap: 22px; width: 100%; }
+  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 24px; padding: clamp(26px, 3.4vw, 40px);
+    backdrop-filter: blur(12px);
+    transition: transform .5s cubic-bezier(.2,.6,.2,1), border-color .5s;
+  }
+  .card:hover { transform: translateY(-6px); border-color: rgba(122,162,255,0.45); }
+  .card .when { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  .card h3 { font-size: clamp(21px, 2.4vw, 27px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .card .sub { color: var(--dim); font-size: 15px; font-weight: 500; margin-bottom: 16px; }
+  .card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .card li { color: #c9c9ce; font-size: 15px; line-height: 1.55; padding-left: 20px; position: relative; }
+  .card li::before { content: '✦'; position: absolute; left: 0; color: var(--accent2); font-size: 11px; top: 4px; }
+
+  /* ---------- Skills ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; }
+  .chip-group { margin-top: 26px; }
+  .chip-group .label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent2); margin-bottom: 12px; font-weight: 600; }
+  .chip {
+    padding: 10px 18px; border-radius: 999px; font-size: 13.5px; font-weight: 500;
+    background: var(--card); border: 1px solid var(--line); color: #dcdce2;
+    transition: all .3s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+
+  /* ---------- Stats ---------- */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 22px; width: 100%; margin-top: 48px; }
+  .stat { text-align: center; padding: 30px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); }
+  .stat .n { font-size: clamp(34px, 4vw, 52px); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat .l { margin-top: 6px; color: var(--dim); font-size: 13px; letter-spacing: 0.04em; }
+
+  /* ---------- Contact ---------- */
+  #contact { text-align: center; align-items: center; }
+  .contact-links { margin-top: 44px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 32px; border-radius: 999px; text-decoration: none;
+    font-size: 15px; font-weight: 600; transition: all .35s;
+  }
+  .btn.primary { background: linear-gradient(90deg, #4a6cf7, #8a5cf6); color: #fff; box-shadow: 0 8px 32px rgba(94,108,255,.35); }
+  .btn.primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 44px rgba(94,108,255,.5); }
+  .btn.ghost { border: 1px solid var(--line); color: var(--ink); background: var(--card); }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  footer { text-align: center; padding: 40px; color: var(--dim); font-size: 12.5px; border-top: 1px solid var(--line); position: relative; z-index: 1; }
+
+  /* progress bar */
+  #progress { position: fixed; top: 0; left: 0; height: 2px; z-index: 11;
+    background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <div class="logo">INDRA<span>.</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+
+  <section id="hero">
+    <h1>INDRA<br>RAMADHAN</h1>
+    <div class="role">Network Engineer · 13+ Years Across Telecom, Enterprise &amp; Cybersecurity</div>
+    <div class="badges reveal d1">
+      <span class="badge">CCNA</span>
+      <span class="badge">NSE4</span>
+      <span class="badge">CompTIA A+</span>
+      <span class="badge">ITIL v4</span>
+    </div>
+    <div class="scroll-hint">Scroll to explore</div>
+  </section>
+
+  <section id="about">
+    <div class="kicker reveal">About</div>
+    <h2 class="reveal d1">Thirteen years of keeping<br><em>networks in orbit.</em></h2>
+    <p class="lede reveal d2">
+      Results-driven Network Engineer spanning telecom infrastructure, enterprise networking,
+      and cybersecurity. Proven track record managing large-scale multi-country network operations,
+      infrastructure migrations, and architecture optimization — from fiber splicing in the field
+      to leading L3 operations across 2,000+ sites.
+    </p>
+    <div class="stats">
+      <div class="stat reveal"><div class="n">13+</div><div class="l">Years Experience</div></div>
+      <div class="stat reveal d1"><div class="n">6</div><div class="l">Countries Coordinated</div></div>
+      <div class="stat reveal d2"><div class="n">3,000</div><div class="l">Sites Managed</div></div>
+      <div class="stat reveal d3"><div class="n">4</div><div class="l">Certifications</div></div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="kicker reveal">Experience</div>
+    <h2 class="reveal d1">A constellation of<br><em>milestones.</em></h2>
+    <div class="grid cols-2">
+
+      <div class="card reveal d1">
+        <div class="when">Oct 2022 — Present · Tangerang</div>
+        <h3>PT Indonesia AirAsia</h3>
+        <div class="sub">Network Engineer</div>
+        <ul>
+          <li>Manage full network infrastructure across all AirAsia offices in Indonesia — Cisco Meraki switches, Meraki APs, FortiGate firewalls.</li>
+          <li>Coordinate network operations with AOC spanning 6 countries: Indonesia, Philippines, Thailand, Malaysia, Cambodia, China.</li>
+          <li>Redesigned network architecture — simplified complex topology, added redundant backup links for sustainable operations.</li>
+          <li>Oversee daily operations of main internet links, backup links, SD-WAN and enterprise WiFi at all Indonesian airport branches.</li>
+        </ul>
+      </div>
+
+      <div class="card reveal d2">
+        <div class="when">Jun 2017 — Sep 2022 · Palembang</div>
+        <h3>PT Lintasarta</h3>
+        <div class="sub">Network Engineer — Team Lead (L3)</div>
+        <ul>
+          <li>Led network engineering across 5 Sumatra provinces — 2,000–3,000 sites for 300–400 enterprise customers.</li>
+          <li>Configured and optimized BGP routing, VPN, MPLS, VLAN, SD-WAN, fiber optic (OLT/ONT), switches and routers.</li>
+          <li>Delivered fiber builds, data center rejuvenation, BTS CM/PM maintenance projects.</li>
+          <li>Escalation point for field teams; led migrations from small to large scale with end-to-end delivery oversight.</li>
+        </ul>
+      </div>
+
+      <div class="card reveal d3">
+        <div class="when">Jun 2010 — Jun 2017 · Jabodetabek</div>
+        <h3>PT Lintasarta</h3>
+        <div class="sub">Field Engineer L1 (Technician)</div>
+        <ul>
+          <li>Installed and maintained Cisco routers, Catalyst switches, Raisecom, ONT/ONU equipment.</li>
+          <li>Deployed GPON/FTTH, PtP/PtMP fiber optic and microwave radio networks.</li>
+          <li>Fiber splicing, termination and testing with OTDR, optical power meter, VFL.</li>
+          <li>Resolved fiber, routing, switching and connectivity issues; preventive/corrective maintenance and service restoration.</li>
+        </ul>
+      </div>
+
+      <div class="card reveal d3">
+        <div class="when">Education</div>
+        <h3>Universitas Mercubuana, Jakarta</h3>
+        <div class="sub">B.Sc. Telecommunications Engineering · 2011–2016</div>
+        <ul>
+          <li style="margin-top:8px"></li>
+        </ul>
+        <h3 style="margin-top:18px">SMK Negeri 1 Cimahi</h3>
+        <div class="sub">Electro Telecommunication · 2006–2010</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="kicker reveal">Technical Skills</div>
+    <h2 class="reveal d1">Tools of the <em>trade.</em></h2>
+
+    <div class="chip-group reveal d1">
+      <div class="label">Networking</div>
+      <div class="chips">
+        <span class="chip">Cisco Meraki</span><span class="chip">Cisco Catalyst</span>
+        <span class="chip">Cisco Routers</span><span class="chip">Cisco AP</span>
+        <span class="chip">FortiGate Firewall</span><span class="chip">BGP</span>
+        <span class="chip">SD-WAN</span><span class="chip">VPN MPLS</span>
+        <span class="chip">VLAN</span><span class="chip">IPSec</span>
+        <span class="chip">Static Routing</span><span class="chip">L1–L4 Troubleshooting</span>
+      </div>
+    </div>
+
+    <div class="chip-group reveal d2">
+      <div class="label">Infrastructure</div>
+      <div class="chips">
+        <span class="chip">GPON / FTTH Fiber Optic</span><span class="chip">Microwave Radio (PtP/PtMP)</span>
+        <span class="chip">OLT / ONT</span><span class="chip">GPON</span><span class="chip">WiFi</span>
+      </div>
+    </div>
+
+    <div class="chip-group reveal d3">
+      <div class="label">Virtualization &amp; DevOps</div>
+      <div class="chips">
+        <span class="chip">Proxmox</span><span class="chip">Docker</span>
+        <span class="chip">PNETLab</span><span class="chip">IPAM</span>
+      </div>
+    </div>
+
+    <div class="chip-group reveal d3">
+      <div class="label">Languages</div>
+      <div class="chips">
+        <span class="chip">Indonesian — Native Fluency</span>
+        <span class="chip">English — B1 Intermediate</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="kicker reveal">Certifications</div>
+    <h2 class="reveal d1">Certified.<br><em>Battle-tested.</em></h2>
+    <div class="grid cols-2">
+      <div class="card reveal d1"><div class="when">Cisco</div><h3>CCNA</h3><div class="sub">Cisco Certified Network Associate</div></div>
+      <div class="card reveal d2"><div class="when">Fortinet</div><h3>NSE4</h3><div class="sub">Network Security Expert Level 4</div></div>
+      <div class="card reveal d1"><div class="when">CompTIA</div><h3>CompTIA A+</h3><div class="sub">CompTIA A+ Certified</div></div>
+      <div class="card reveal d2"><div class="when">AXELOS</div><h3>ITIL v4 Foundation</h3><div class="sub">ITIL v4 Foundation Certified</div></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="kicker reveal">Contact</div>
+    <h2 class="reveal d1">Let's build something<br><em>out of this world.</em></h2>
+    <p class="lede reveal d2">Open to conversations about network engineering, infrastructure, and security roles.</p>
+    <div class="contact-links reveal d3">
+      <a class="btn primary" href="mailto:ramadhan.ird@gmail.com">ramadhan.ird@gmail.com</a>
+      <a class="btn ghost" href="tel:+6285717420369">+62 857-1742-0369</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/indra-ramadhan-a3aa241b1" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>Tangerang, Indonesia · © 2026 Indra Ramadhan</footer>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* ============================================================
+   Galaxy Morph Engine
+   One particle system, four keyframe shapes. Global scroll
+   progress interpolates each particle between shape targets.
+   ============================================================ */
+
+const COUNT = window.innerWidth < 768 ? 9000 : 16000;
+
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x030308, 0.0011);
+
+const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 4000);
+camera.position.set(0, 140, 420);
+
+/* ---------- Shape generators ---------- */
+
+// 1. Spiral galaxy
+function galaxyShape(i, n) {
+  const arms = 4;
+  const arm = i % arms;
+  const t = Math.pow(Math.random(), 1.6);            // denser core
+  const r = 40 + t * 520;
+  const spin = t * 4.2 + (arm / arms) * Math.PI * 2;
+  const spread = (1 - t) * 46 + 8;
+  const x = Math.cos(spin) * r + (Math.random() - 0.5) * spread * 2;
+  const z = Math.sin(spin) * r + (Math.random() - 0.5) * spread * 2;
+  const y = (Math.random() - 0.5) * spread * (1.6 - t) * 0.9;
+  return [x, y, z];
+}
+
+// 2. Globe (network across countries)
+function globeShape(i, n) {
+  const u = Math.random(), v = Math.random();
+  const theta = 2 * Math.PI * u;
+  const phi = Math.acos(2 * v - 1);
+  const r = 260 + (Math.random() - 0.5) * 14;
+  return [
+    r * Math.sin(phi) * Math.cos(theta),
+    r * Math.cos(phi),
+    r * Math.sin(phi) * Math.sin(theta)
+  ];
+}
+
+// 3. Torus lattice (fiber ring / infrastructure)
+function torusShape(i, n) {
+  const u = Math.random() * Math.PI * 2;
+  const v = Math.random() * Math.PI * 2;
+  const R = 250, r = 70 + (Math.random() - 0.5) * 24;
+  return [
+    (R + r * Math.cos(v)) * Math.cos(u),
+    r * Math.sin(v),
+    (R + r * Math.cos(v)) * Math.sin(u)
+  ];
+}
+
+// 4. Text "INDRA" sampled from an offscreen canvas
+function textShape() {
+  const c = document.createElement('canvas');
+  c.width = 900; c.height = 240;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.fillStyle = '#fff';
+  ctx.font = '800 190px Inter, Arial, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('INDRA', 450, 128);
+  const img = ctx.getImageData(0, 0, c.width, c.height).data;
+  const pts = [];
+  for (let y = 0; y < c.height; y += 2)
+    for (let x = 0; x < c.width; x += 2)
+      if (img[(y * c.width + x) * 4] > 128) pts.push([x, y]);
+  return () => {
+    const [x, y] = pts[Math.floor(Math.random() * pts.length)];
+    const s = 0.62;
+    return [
+      (x - c.width / 2) * s,
+      -(y - c.height / 2) * s + 10,
+      (Math.random() - 0.5) * 26
+    ];
+  };
+}
+const textGen = textShape();
+
+const gens = [galaxyShape, globeShape, torusShape, () => textGen()];
+
+const shapes = gens.map(gen => {
+  const arr = new Float32Array(COUNT * 3);
+  for (let i = 0; i < COUNT; i++) {
+    const p = gen(i, COUNT);
+    arr[i * 3] = p[0]; arr[i * 3 + 1] = p[1]; arr[i * 3 + 2] = p[2];
+  }
+  return arr;
+});
+
+/* ---------- Geometry & material ---------- */
+const positions = new Float32Array(shapes[0]);
+const colors = new Float32Array(COUNT * 3);
+const sizes = new Float32Array(COUNT);
+const seeds = new Float32Array(COUNT);
+const cIn = new THREE.Color(), cOut = new THREE.Color();
+for (let i = 0; i < COUNT; i++) {
+  const t = i / COUNT;
+  // palette shifts per shape handled below; base gradient core→edge
+  cIn.setHSL(0.62, 0.85, 0.75);   // blue core
+  cOut.setHSL(0.74, 0.7, 0.55);   // violet edge
+  const mixed = cIn.clone().lerp(cOut, t);
+  const boost = Math.random() < 0.03 ? 2.4 : 1;   // rare bright stars
+  colors[i * 3] = mixed.r * boost; colors[i * 3 + 1] = mixed.g * boost; colors[i * 3 + 2] = mixed.b * boost;
+  sizes[i] = (Math.random() * 1.6 + 0.6) * (boost > 1 ? 2.2 : 1);
+  seeds[i] = Math.random() * Math.PI * 2;
+}
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+geo.setAttribute('seed', new THREE.BufferAttribute(seeds, 1));
+
+const mat = new THREE.ShaderMaterial({
+  transparent: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  uniforms: { uTime: { value: 0 }, uPixel: { value: Math.min(devicePixelRatio, 2) } },
+  vertexShader: `
+    attribute float size;
+    attribute float seed;
+    varying vec3 vColor;
+    uniform float uTime;
+    uniform float uPixel;
+    void main() {
+      vColor = color;
+      vec3 p = position;
+      // gentle organic drift so the cloud feels alive
+      p.x += sin(uTime * 0.4 + seed) * 3.0;
+      p.y += cos(uTime * 0.3 + seed * 1.7) * 3.0;
+      p.z += sin(uTime * 0.35 + seed * 2.3) * 3.0;
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      float twinkle = 0.75 + 0.25 * sin(uTime * 2.0 + seed * 5.0);
+      gl_PointSize = size * twinkle * uPixel * (300.0 / -mv.z);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    varying vec3 vColor;
+    void main() {
+      float d = length(gl_PointCoord - 0.5);
+      float a = smoothstep(0.5, 0.0, d);
+      a *= a;
+      gl_FragColor = vec4(vColor, a);
+    }`,
+  vertexColors: true
+});
+
+const points = new THREE.Points(geo, mat);
+scene.add(points);
+
+/* ---------- Background starfield (static, far away) ---------- */
+{
+  const n = 1500;
+  const arr = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    arr[i * 3] = (Math.random() - 0.5) * 3600;
+    arr[i * 3 + 1] = (Math.random() - 0.5) * 2200;
+    arr[i * 3 + 2] = (Math.random() - 0.5) * 3600 - 800;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+  const m = new THREE.PointsMaterial({ color: 0x8899cc, size: 1.6, sizeAttenuation: true, transparent: true, opacity: 0.65 });
+  scene.add(new THREE.Points(g, m));
+}
+
+/* ---------- Scroll → morph driver ---------- */
+// Keyframes map scroll progress [0..1] onto shape indices.
+// hero=galaxy, about=globe, skills=torus, contact=text
+const KEYFRAMES = [0.0, 0.33, 0.62, 0.88];
+
+let scrollT = 0;
+addEventListener('scroll', () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  scrollT = max > 0 ? scrollY / max : 0;
+  document.getElementById('progress').style.width = (scrollT * 100) + '%';
+}, { passive: true });
+
+function currentTargets(out) {
+  // find segment
+  let a = 0, b = 0;
+  for (let k = KEYFRAMES.length - 1; k >= 0; k--) {
+    if (scrollT >= KEYFRAMES[k]) { a = k; b = Math.min(k + 1, KEYFRAMES.length - 1); break; }
+  }
+  const span = KEYFRAMES[b] - KEYFRAMES[a];
+  let t = span > 0 ? (scrollT - KEYFRAMES[a]) / span : 0;
+  t = Math.min(Math.max(t, 0), 1);
+  t = t * t * (3 - 2 * t); // smoothstep easing
+  const A = shapes[a], B = shapes[b];
+  for (let i = 0; i < COUNT * 3; i++) out[i] = A[i] + (B[i] - A[i]) * t;
+}
+
+/* ---------- Mouse parallax ---------- */
+let mx = 0, my = 0, tmx = 0, tmy = 0;
+addEventListener('mousemove', e => {
+  tmx = (e.clientX / innerWidth - 0.5);
+  tmy = (e.clientY / innerHeight - 0.5);
+}, { passive: true });
+
+/* ---------- Render loop ---------- */
+const clock = new THREE.Clock();
+const tmp = new Float32Array(COUNT * 3);
+let morphPos = null;
+
+function tick() {
+  requestAnimationFrame(tick);
+  const dt = clock.getDelta();
+  mat.uniforms.uTime.value += dt;
+
+  currentTargets(tmp);
+
+  // spring-smoothed morph: particles chase their target => fluid motion
+  if (!morphPos) morphPos = new Float32Array(tmp);
+  const ease = 1 - Math.pow(0.001, dt); // frame-rate independent smoothing
+  for (let i = 0; i < COUNT * 3; i++)
+    morphPos[i] += (tmp[i] - morphPos[i]) * ease;
+  geo.attributes.position.array.set(morphPos);
+  geo.attributes.position.needsUpdate = true;
+
+  // rotation slows near text shape so it stays readable
+  const textWeight = Math.max(0, scrollT - 0.7) / 0.3;
+  points.rotation.y += dt * (0.05 + 0.04 * Math.sin(mat.uniforms.uTime.value * 0.1)) * (1 - textWeight * 0.85);
+
+  mx += (tmx - mx) * 0.04;
+  my += (tmy - my) * 0.04;
+  camera.position.x += ((mx * 120) - camera.position.x) * 0.05;
+  camera.position.y += ((140 + my * -80) - camera.position.y) * 0.05;
+  camera.lookAt(0, 0, 0);
+
+  renderer.render(scene, camera);
+}
+tick();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+/* ---------- Reveal-on-scroll ---------- */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
